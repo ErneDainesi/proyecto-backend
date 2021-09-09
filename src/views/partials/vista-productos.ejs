@@ -1,0 +1,15 @@
+<div class="container">
+	<div class="vista-productos">
+		<%products.forEach(product => { %>
+			<div class="producto">
+				<p>
+					<%= product.title %>
+				</p>
+				<p>
+					<%= product.price %>
+				</p>
+				<img src="<%= product.thumbnail %>" alt="imagen de producto">
+			</div>
+		<%});%>
+	</div>
+</div>
