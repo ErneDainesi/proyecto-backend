@@ -7,7 +7,7 @@ module.exports = {
 	target: 'node',
 	output: {
 		filename: 'main.js',
-		path: path.resolve(__dirname, 'dist')
+		path: path.join(__dirname, '..', 'dist'),
 	},
 	resolve: {
 		extensions: ['.ts', '.js']
@@ -20,5 +20,8 @@ module.exports = {
 				exclude: /node_modules/
 			}
 		]
-	}
+	},
+	externals: {
+		express: 'express',
+	},
 }
