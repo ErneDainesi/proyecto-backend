@@ -1,7 +1,9 @@
 import express from 'express';
-import {checkIfIsAdmin} from '../lib/validations';
+import {overwriteFile} from '../lib/utilities';
 
 const router = express.Router();
+const {checkIfIsAdmin} = require('../lib/validations');
+const FILE_NAME = "./products";
 const products: Object[] = [];
 
 router.use(checkIfIsAdmin);
@@ -27,6 +29,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/:userId', checkIfIsAdmin, (req, res) => {
+	console.log("POST");
 	const product: Object = {
 		...req.body,
 		timeStamp: Date.now(),
@@ -34,18 +37,21 @@ router.post('/:userId', checkIfIsAdmin, (req, res) => {
 		id: products.length + 1
 	};
 	products.push(product);
+	overwriteFile(FILE_NAME, products);
 	res.redirect('/products');
 });
 
 router.put('/:userId/:productId', checkIfIsAdmin, (req, res) => {
 	const id: number = +req.params.productId;
 	products[id - 1] = req.body;
+	overwriteFile(FILE_NAME, products);
 	res.send(products[id - 1]);
 });
 
 router.delete('/:userId/:productId', checkIfIsAdmin, (req, res) => {
-	const productId: number = +req.params.id;
+	const productId: number = +req.params.productId;
 	const deletedProduct = products.splice(productId - 1, 1);
+	overwriteFile(FILE_NAME, products);
 	res.send(deletedProduct[0]);
 });
 
