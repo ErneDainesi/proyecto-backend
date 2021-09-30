@@ -1,12 +1,11 @@
 import express from 'express';
+import {checkIfIsAdmin} from '../lib/validations';
 import {overwriteFile} from '../lib/utilities';
 
 const router = express.Router();
-const {checkIfIsAdmin} = require('../lib/validations');
-const FILE_NAME = "./products";
+// const {checkIfIsAdmin} = require('../lib/validations');
+const FILE_NAME = "./products.json";
 const products: Object[] = [];
-
-router.use(checkIfIsAdmin);
 
 router.get('/', (req, res) => {
 	res.render('pages/productos');

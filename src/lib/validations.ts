@@ -23,4 +23,6 @@ export const checkIfIsAdmin = (err, req, res, next) => {
 			description: `Route ${req.originalUrl} method ${req.method} not authorized`
 		});
 	}
+	next();
 };
+
