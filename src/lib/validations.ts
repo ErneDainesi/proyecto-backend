@@ -1,3 +1,5 @@
+import {ErrorRequestHandler} from 'express';
+
 // Declaro el tipo User
 interface User {
 	id: number,
@@ -12,7 +14,7 @@ const users: Array<User> = [
 
 // Busca al usuario por su id (que es pasado como parametro en el request)
 // dentro del array "users" y valida que este sea administrador
-export const checkIfIsAdmin = (err, req, res, next) => {
+export const checkIfIsAdmin: ErrorRequestHandler = (err, req, res, next) => {
 	const userId: number = +req.params.userId - 1;
 	const user: User = users[userId];
 	console.log("Entre el middleware");
@@ -25,4 +27,3 @@ export const checkIfIsAdmin = (err, req, res, next) => {
 	}
 	next();
 };
-

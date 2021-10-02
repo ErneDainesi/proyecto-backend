@@ -1,21 +1,21 @@
-import express from 'express';
+import express, {Application, Request, Response} from 'express';
+import productsController from './routes/products.route';
+import cartController from './routes/cart.route';
 
-const app = express();
+const app: Application = express();
 const ejs = require("ejs").__express; // solucion a error "cannot find ejs module"
-const products = require('./routes/products.route');
-const cart = require('./routes/cart.route');
 const PORT = 8080;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use('/products', products);
-app.use('/cart', cart);
+app.use('/products', productsController);
+app.use('/cart', cartController);
 
 app.set('view engine', 'ejs');
 app.set('views', './src/views');
 app.engine('ejs', ejs);
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
 	res.send('<h1>Proyecto Backend</h1>');
 });
 
