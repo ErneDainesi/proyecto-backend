@@ -18,7 +18,7 @@ export class MongoDatabase {
             const message = await productsSchema.findById(id);
             return message;
         } catch(err) {
-            throw new Error();
+            console.error(err);
         }
     }
 
@@ -27,7 +27,7 @@ export class MongoDatabase {
         try {
             await newProduct.save();
         } catch(err) {
-            throw new Error();
+            console.error(err);
         }
     }
 
@@ -36,16 +36,16 @@ export class MongoDatabase {
             const deletedProduct = await productsSchema.deleteOne({id});
             return deletedProduct;
         } catch(err) {
-            throw new Error();
+            console.error(err);
         }
     }
 
     public async updateProduct(id:number, product: IProduct) {
-        //try {
-        //    const updatedProduct = await productsSchema.updateOne(product);
-        //    return updateProduct;
-        //} catch(err) {
-        //    throw new Error();
-        //}
+        try {
+            const updatedProduct = await productsSchema.updateOne({id}, {product});
+            return updatedProduct;
+        } catch(err) {
+            console.error(err);
+        }
     }
 }
