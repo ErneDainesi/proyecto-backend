@@ -1,7 +1,7 @@
-import options from "./sqlite3";
+import config from "./config";
 import {Knex} from 'knex';
 
-const knex = require("knex")(options);
+const knex = require("knex")(config);
 
 export const createSqliteDB = async () => {
     try {
