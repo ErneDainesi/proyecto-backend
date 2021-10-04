@@ -51,6 +51,7 @@ export class SqliteDatabase {
             console.error(err);
         }
     }
+
     public async deleteProduct(id: number) {
         try {
             await this.knexInstance.from(this.productsTable).where({id: id}).del();

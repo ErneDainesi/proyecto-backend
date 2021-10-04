@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import {overwriteFile} from '../lib/utilities';
+import { MongoDatabase } from "../database/mongodb/mongodb";
 
 const FILE_NAME = "./products.json";
 const products: Object[] = [];

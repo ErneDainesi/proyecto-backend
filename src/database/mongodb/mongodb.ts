@@ -1,6 +1,14 @@
 import mongoose, { mongo } from 'mongoose';
 import productsSchema, { IProduct } from '../../schemas/mongodb/productsSchema';
-import { MONGODB_URL } from '../../constants';
+import {
+    MONGODB_URL,
+    DB_FAILED_CONNECTION,
+    DB_FAILED_GET,
+    DB_FAILED_DELETE,
+    DB_FAILED_UPDATE,
+    DB_FAILED_INSERT,
+    INVALID_FILTER
+} from '../../constants';
 
 export class MongoDatabase {
 
@@ -10,15 +18,50 @@ export class MongoDatabase {
             console.log("Connection to mongo database was established");
         } catch(err) {
             console.error(err);
+            throw new Error(DB_FAILED_CONNECTION);
         }
     }
 
-    public async getProduct(id: number) {
+    public async getAllProducts() {
         try {
-            const message = await productsSchema.findById(id);
-            return message;
+            const products = await productsSchema.find();
+            return products;
+        } catch (err) {
+            console.error(err);
+            throw new Error(DB_FAILED_GET);
+        }
+    }
+
+    private filterProduct(product: IProduct, filter: string) {
+        switch (filter) {
+            case "name": 
+                return product.name;
+            case "description":
+                return product.description;
+            case "stock":
+                return product.stock;
+            case "price":
+                return product.price;
+            default:
+                break;
+        }
+    }
+
+    public async getProduct(id: number, filter: string) {
+        try {
+            const product: IProduct | null = await productsSchema.findById(id);
+            if (!product) {
+                throw new Error(DB_FAILED_GET);
+            }
+            if (!filter) { return product }
+            const filteredProduct = this.filterProduct(product, filter);
+            if (!filteredProduct) {
+                throw new Error(INVALID_FILTER);
+            }
+            return filteredProduct;
         } catch(err) {
             console.error(err);
+            throw new Error(DB_FAILED_GET);
         }
     }
 
@@ -28,6 +71,7 @@ export class MongoDatabase {
             await newProduct.save();
         } catch(err) {
             console.error(err);
+            throw new Error(DB_FAILED_INSERT);
         }
     }
 
@@ -37,6 +81,7 @@ export class MongoDatabase {
             return deletedProduct;
         } catch(err) {
             console.error(err);
+            throw new Error(DB_FAILED_DELETE);
         }
     }
 
@@ -46,6 +91,7 @@ export class MongoDatabase {
             return updatedProduct;
         } catch(err) {
             console.error(err);
+            throw new Error(DB_FAILED_UPDATE);
         }
     }
 }
