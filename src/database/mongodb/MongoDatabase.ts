@@ -47,7 +47,7 @@ export class MongoDatabase {
         }
     }
 
-    public async getProduct(id: number, filter: string | null) {
+    public async getProduct(id: string, filter: string | null) {
         try {
             const product: IProduct | null = await productsSchema.findById(id);
             if (!product) {
@@ -75,7 +75,7 @@ export class MongoDatabase {
         }
     }
 
-    public async deleteProduct(id: number) {
+    public async deleteProduct(id: string) {
         try {
             const deletedProduct = await productsSchema.deleteOne({id});
             return deletedProduct;
@@ -85,7 +85,7 @@ export class MongoDatabase {
         }
     }
 
-    public async updateProduct(id:number, product: IProduct) {
+    public async updateProduct(id: string, product: IProduct) {
         try {
             const updatedProduct = await productsSchema.updateOne({id}, {product});
             return updatedProduct;

@@ -23,7 +23,7 @@ export const getProductsView = async (req: Request, res: Response) => {
 };
 
 export const getProduct = (req: Request, res: Response) => {
-	const idProduct: number = +req.params.id;
+	const idProduct: string = req.params.id;
 	try {
 		const product = mongodb.getProduct(idProduct, null);
 		res.json(product);
@@ -44,7 +44,7 @@ export const saveProduct = (req: Request, res: Response) => {
 
 export const updateProduct = (req: Request, res: Response) => {
 	try {
-		const id: number = +req.params.productId;
+		const id: string = req.params.productId;
 		const updatedProduct = mongodb.updateProduct(id, req.body);
 		res.send(updateProduct);
 	} catch (err) {
@@ -54,7 +54,7 @@ export const updateProduct = (req: Request, res: Response) => {
 
 export const deleteProduct = (req: Request, res: Response) => {
 	try {
-		const productId: number = +req.params.productId;
+		const productId: string = req.params.productId;
 		const deletedProduct = mongodb.deleteProduct(productId);
 		res.send(deletedProduct);
 	} catch (err) {
