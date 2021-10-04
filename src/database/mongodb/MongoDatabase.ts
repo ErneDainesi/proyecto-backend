@@ -47,7 +47,7 @@ export class MongoDatabase {
         }
     }
 
-    public async getProduct(id: number, filter: string) {
+    public async getProduct(id: number, filter: string | null) {
         try {
             const product: IProduct | null = await productsSchema.findById(id);
             if (!product) {
@@ -92,6 +92,15 @@ export class MongoDatabase {
         } catch(err) {
             console.error(err);
             throw new Error(DB_FAILED_UPDATE);
+        }
+    }
+
+    public async amountOfProducts() {
+        try {
+            const amount: number = await productsSchema.count();
+            return amount;
+        } catch (err) {
+            console.error(err);
         }
     }
 }

@@ -1,53 +1,63 @@
 import { Request, Response } from "express";
+import { MongoDatabase } from "../database/mongodb/MongoDatabase";
 import {overwriteFile} from '../lib/utilities';
-import { MongoDatabase } from "../database/mongodb/mongodb";
 
 const FILE_NAME = "./products.json";
-const products: Object[] = [];
+const mongodb: MongoDatabase = new MongoDatabase();
 
 export const getProductsPage =  (req: Request, res: Response) => {
 	res.render('pages/productos');
 };
 
-export const getProductsView = (req: Request, res: Response) => {
-	res.render("pages/vista", {
-		products,
-		thereAreProducts: products.length > 0
-	});
+export const getProductsView = async (req: Request, res: Response) => {
+	try {
+		const products = mongodb.getAllProducts();
+		const productCount = await mongodb.amountOfProducts();
+		res.render("pages/vista", {
+			products,
+			thereAreProducts: productCount ? productCount > 0 : false
+		});
+	} catch (err) {
+		res.status(404).json({error: 'no products were found'});
+	}
 };
 
 export const getProduct = (req: Request, res: Response) => {
-	const idProducto: number = +req.params.id;
-	if (!products[idProducto - 1]) {
-		res.json({error: 'producto no encontrado'})
-	} else {
-		res.json(products[idProducto - 1]);
+	const idProduct: number = +req.params.id;
+	try {
+		const product = mongodb.getProduct(idProduct, null);
+		res.json(product);
+	} catch (err) {
+		res.status(404).json({error: 'product not found'});
 	}
 };
 
 export const saveProduct = (req: Request, res: Response) => { 
-	console.log("POST");
-	const product: Object = {
-		...req.body,
-		timeStamp: Date.now(),
-		code: products.length + 1,
-		id: products.length + 1
-	};
-	products.push(product);
-	overwriteFile(FILE_NAME, products);
-	res.redirect('/products');
+	const product = {...req.body};
+	try {
+		mongodb.insertProduct(product);
+		res.redirect('/products');
+	} catch (err) {
+		res.status(500).json({error: "couldn't save product"});
+	}
 };
 
 export const updateProduct = (req: Request, res: Response) => {
-	const id: number = +req.params.productId;
-	products[id - 1] = req.body;
-	overwriteFile(FILE_NAME, products);
-	res.send(products[id - 1]);
+	try {
+		const id: number = +req.params.productId;
+		const updatedProduct = mongodb.updateProduct(id, req.body);
+		res.send(updateProduct);
+	} catch (err) {
+		res.status(500).json({error: "couldn't update product"});
+	}
 };
 
 export const deleteProduct = (req: Request, res: Response) => {
-	const productId: number = +req.params.productId;
-	const deletedProduct = products.splice(productId - 1, 1);
-	overwriteFile(FILE_NAME, products);
-	res.send(deletedProduct[0]);
+	try {
+		const productId: number = +req.params.productId;
+		const deletedProduct = mongodb.deleteProduct(productId);
+		res.send(deletedProduct);
+	} catch (err) {
+		res.status(500).json({error: "couldn't delete product"});
+	}
 };

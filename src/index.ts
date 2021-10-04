@@ -2,8 +2,8 @@ import express, {Application, Request, Response} from 'express';
 import productsController from './routes/products.route';
 import cartController from './routes/cart.route';
 import {PORT} from './constants';
-import {MongoDatabase} from './database/mongodb/mongodb';
-import { SqliteDatabase } from './database/sqlite3/sqlite3';
+import {MongoDatabase} from './database/mongodb/MongoDatabase';
+import {SqliteDatabase} from './database/sqlite3/SqliteDatabase';
 
 const app: Application = express();
 const ejs = require("ejs").__express; // solucion a error "cannot find ejs module"

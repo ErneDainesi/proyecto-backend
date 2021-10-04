@@ -1,6 +1,12 @@
 import config from "./config";
 import {knex, Knex} from 'knex';
 import IProduct from "../../schemas/sqlite3/productsSchema";
+import {
+    DB_FAILED_DELETE,
+    DB_FAILED_GET,
+    DB_FAILED_INSERT,
+    DB_FAILED_UPDATE
+} from "../../constants";
 
 export class SqliteDatabase {
     private knexInstance: Knex;
@@ -24,6 +30,7 @@ export class SqliteDatabase {
             });
         } catch (err) {
             console.error(err);
+            throw new Error()
         }
     }
 
@@ -33,6 +40,7 @@ export class SqliteDatabase {
             return product;
         } catch (err) {
             console.error(err);
+            throw new Error(DB_FAILED_GET)
         }
     }
 
@@ -41,6 +49,7 @@ export class SqliteDatabase {
             await this.knexInstance.insert(product);
         } catch (err) {
             console.error(err);
+            throw new Error(DB_FAILED_INSERT)
         }
     }
 
@@ -49,6 +58,7 @@ export class SqliteDatabase {
             await this.knexInstance.from(this.productsTable).where({id: id}).update({...newValue})
         } catch (err) {
             console.error(err);
+            throw new Error(DB_FAILED_UPDATE)
         }
     }
 
@@ -57,6 +67,7 @@ export class SqliteDatabase {
             await this.knexInstance.from(this.productsTable).where({id: id}).del();
         } catch (err) {
             console.error(err);
+            throw new Error(DB_FAILED_DELETE)
         }
     }
 }
