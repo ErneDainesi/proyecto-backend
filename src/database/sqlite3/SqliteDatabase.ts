@@ -34,7 +34,7 @@ export class SqliteDatabase {
         }
     }
 
-    public async getProduct(id: number) {
+    public async getProduct(id: string) {
         try {
             const product = await this.knexInstance.from(this.productsTable).where({id: id}).select();
             return product;
@@ -53,7 +53,7 @@ export class SqliteDatabase {
         }
     }
 
-    public async updateProduct(id: number, newValue: object) {
+    public async updateProduct(id: string, newValue: object) {
         try {
             await this.knexInstance.from(this.productsTable).where({id: id}).update({...newValue})
         } catch (err) {
@@ -62,7 +62,7 @@ export class SqliteDatabase {
         }
     }
 
-    public async deleteProduct(id: number) {
+    public async deleteProduct(id: string) {
         try {
             await this.knexInstance.from(this.productsTable).where({id: id}).del();
         } catch (err) {
