@@ -1,5 +1,5 @@
 // Server
-export const PORT: number = 8080;
+export const PORT: string = process.env.PORT || '8080';
 
 // Databases
 export const MONGODB_URL: string = "mongodb+srv://ernesto:erne@cluster0.mf9ug.mongodb.net/ecommerce?retryWrites=true&w=majority";
