@@ -1,2 +1,3 @@
 node_modules/*
-ecommerce.session.sql
+.env
+
