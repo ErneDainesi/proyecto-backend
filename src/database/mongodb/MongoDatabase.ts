@@ -1,4 +1,4 @@
-import mongoose, { mongo } from 'mongoose';
+import mongoose from 'mongoose';
 import productsSchema, { IProduct } from '../../schemas/mongodb/productsSchema';
 import {
     MONGODB_URL,
