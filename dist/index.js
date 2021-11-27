@@ -8,6 +8,8 @@ var products_route_1 = __importDefault(require("./routes/products.route"));
 var cart_route_1 = __importDefault(require("./routes/cart.route"));
 var constants_1 = require("./constants");
 var MongoDatabase_1 = require("./database/mongodb/MongoDatabase");
+require('dotenv').cofig();
+console.log(process.env.ATLAS_URI);
 var app = (0, express_1.default)();
 var ejs = require("ejs").__express; // solucion a error "cannot find ejs module"
 app.use(express_1.default.json());

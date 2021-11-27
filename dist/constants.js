@@ -4,7 +4,7 @@ exports.INVALID_DB_ID = exports.INVALID_FILTER = exports.DB_FAILED_INSERT = expo
 // Server
 exports.PORT = process.env.PORT || '8080';
 // Databases
-exports.MONGODB_URL = "mongodb+srv://ernesto:erne@cluster0.mf9ug.mongodb.net/ecommerce?retryWrites=true&w=majority";
+exports.MONGODB_URL = process.env.ATLAS_URI;
 exports.MONGO_DB = 0;
 exports.SQLITE3_DB = 1;
 // Error messages

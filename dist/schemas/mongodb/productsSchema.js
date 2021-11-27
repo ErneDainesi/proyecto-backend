@@ -6,8 +6,17 @@ var productSchema = new mongoose_1.Schema({
         type: String,
         required: true
     },
-    description: String,
-    stock: Number,
-    price: Number
+    description: {
+        type: String,
+        required: true
+    },
+    stock: {
+        type: Number,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    }
 });
-exports.default = (0, mongoose_1.model)("ProductMongo", productSchema);
+exports.default = (0, mongoose_1.model)("Product", productSchema);

@@ -3,6 +3,9 @@ import productsController from './routes/products.route';
 import cartController from './routes/cart.route';
 import {PORT} from './constants';
 import {MongoDatabase} from './database/mongodb/MongoDatabase';
+import {config} from "dotenv";
+
+config(); // config para variables de entorno
 
 const app: Application = express();
 const ejs = require("ejs").__express; // solucion a error "cannot find ejs module"

@@ -1,11 +1,6 @@
 // Server
 export const PORT: string = process.env.PORT || '8080';
 
-// Databases
-export const MONGODB_URL: string = "mongodb+srv://ernesto:erne@cluster0.mf9ug.mongodb.net/ecommerce?retryWrites=true&w=majority";
-export const MONGO_DB: number = 0;
-export const SQLITE3_DB: number = 1;
-
 // Error messages
 export const DB_FAILED_CONNECTION = "Failed at connecting to database";
 export const DB_FAILED_GET = "Failed getting item form database";
