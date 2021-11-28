@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import productsSchema, {IProduct} from '../../schemas/mongodb/productsSchema';
+import productsSchema, {IProduct} from '../../schemas/productsSchema';
+import UserSchema, {User} from '../../schemas/User.schema';
 import {
 	DB_FAILED_CONNECTION,
 	DB_FAILED_GET,
@@ -13,7 +14,8 @@ export class MongoDatabase {
 
 	public static async connect() {
 		try {
-			await mongoose.connect(process.env.ATLAS_URI as string, {});
+			const uri: string = process.env.ATLAS_URI as string;
+			await mongoose.connect(uri, {});
 			console.log("Connection to mongo database was established");
 		} catch (err) {
 			console.error(err);
@@ -102,4 +104,15 @@ export class MongoDatabase {
 			console.error(err);
 		}
 	}
+
+	public async insertUser(user: User) {
+		const newUser = new UserSchema(user);
+		try {
+			await newUser.save();
+		} catch (err) {
+			console.error(err);
+			throw new Error("Failed to save user");
+		}
+	}
 }
+
