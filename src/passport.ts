@@ -6,8 +6,8 @@ import {isValidPassword, hashPassword} from './lib/passwordManager';
 
 passport.use('login', new LocalStrategy({
 	passReqToCallback: true
-}, (req, username, password, done) => {
-	UserSchema.findOne({username}, (err: any, user: User) => {
+}, (req, email, password, done) => {
+	UserSchema.findOne({email}, (err: any, user: User) => {
 		if (err) return done(err);
 		if (!user) {
 			return done(null, false);
@@ -21,9 +21,12 @@ passport.use('login', new LocalStrategy({
 
 passport.use('signup', new LocalStrategy({
 	passReqToCallback: true
-}, (req, name, password, done) => {
-	UserSchema.findOne({name}, (err: any, user: User) => {
-		if (err) return done(err);
+}, (req, email, password, done) => {
+	UserSchema.findOne({email}, (err: any, user: User) => {
+		if (err) {
+			console.error(err);
+			return done(err);
+		}
 		if (user) {
 			return done(null, false);
 		}
