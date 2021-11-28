@@ -8,7 +8,7 @@ config(); // config para variables de entorno
 MongoDatabase.connect();
 
 app.get('/', (req: Request, res: Response) => {
-	res.send('<h1>Proyecto Backend</h1>');
+	res.render('pages/index');
 });
 
 app.listen(PORT, () => {
