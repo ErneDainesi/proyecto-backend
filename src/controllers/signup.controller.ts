@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 
 export const signup = (req: Request, res: Response) => {
-	res.send('signup form');
+	res.render('pages/signup');
 };
 
 export const signupSuccess = (req: Request, res: Response) => {

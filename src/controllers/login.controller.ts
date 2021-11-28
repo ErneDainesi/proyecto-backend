@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 
 export const login = (req: Request, res: Response) => {
-	res.send('login form');
+	res.render('pages/login');
 };
 
 export const loginSuccess = (req: Request, res: Response) => {
