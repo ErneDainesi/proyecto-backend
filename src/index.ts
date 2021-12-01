@@ -3,6 +3,7 @@ import {PORT} from './constants';
 import {MongoDatabase} from './database/mongodb/MongoDatabase';
 import {config} from "dotenv";
 import app from './app';
+import logger from './logger/winston';
 
 config(); // config para variables de entorno
 MongoDatabase.connect();
@@ -12,6 +13,6 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.listen(PORT, () => {
-	console.log(`Express Server listening on port: ${PORT}`);
+	logger.info(`Express Server listening on port: ${PORT}`);
 });
 

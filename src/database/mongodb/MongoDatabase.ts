@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import productsSchema, {IProduct} from '../../schemas/productsSchema';
 import UserSchema, {User} from '../../schemas/User.schema';
+import logger from '../../logger/winston';
 import {
 	DB_FAILED_CONNECTION,
 	DB_FAILED_GET,
@@ -18,8 +19,7 @@ export class MongoDatabase {
 			await mongoose.connect(uri, {});
 			console.log("Connection to mongo database was established");
 		} catch (err) {
-			console.error(err);
-			throw new Error(DB_FAILED_CONNECTION);
+			logger.error(`[${DB_FAILED_CONNECTION}] | ${err}`);
 		}
 	}
 
@@ -28,8 +28,7 @@ export class MongoDatabase {
 			const products = await productsSchema.find();
 			return products;
 		} catch (err) {
-			console.error(err);
-			throw new Error(DB_FAILED_GET);
+			logger.error(`[${DB_FAILED_GET}] | ${err}`);
 		}
 	}
 
@@ -52,17 +51,17 @@ export class MongoDatabase {
 		try {
 			const product: IProduct | null = await productsSchema.findById(id);
 			if (!product) {
-				throw new Error(DB_FAILED_GET);
+				logger.error(DB_FAILED_GET);
+				return;
 			}
 			if (!filter) {return product}
 			const filteredProduct = this.filterProduct(product, filter);
 			if (!filteredProduct) {
-				throw new Error(INVALID_FILTER);
+				logger.error(INVALID_FILTER);
 			}
 			return filteredProduct;
 		} catch (err) {
-			console.error(err);
-			throw new Error(DB_FAILED_GET);
+			logger.error(`[${DB_FAILED_GET}] | ${err}`);
 		}
 	}
 
@@ -71,8 +70,7 @@ export class MongoDatabase {
 		try {
 			await newProduct.save();
 		} catch (err) {
-			console.error(err);
-			throw new Error(DB_FAILED_INSERT);
+			logger.error(`[${DB_FAILED_INSERT}] | ${err}`);
 		}
 	}
 
@@ -81,8 +79,7 @@ export class MongoDatabase {
 			const deletedProduct = await productsSchema.deleteOne({id});
 			return deletedProduct;
 		} catch (err) {
-			console.error(err);
-			throw new Error(DB_FAILED_DELETE);
+			logger.error(`[${DB_FAILED_DELETE}] | ${err}`);
 		}
 	}
 
@@ -91,8 +88,7 @@ export class MongoDatabase {
 			const updatedProduct = await productsSchema.updateOne({id}, {product});
 			return updatedProduct;
 		} catch (err) {
-			console.error(err);
-			throw new Error(DB_FAILED_UPDATE);
+			logger.error(`[${DB_FAILED_UPDATE}] | ${err}`);
 		}
 	}
 
@@ -101,7 +97,7 @@ export class MongoDatabase {
 			const amount: number = await productsSchema.count();
 			return amount;
 		} catch (err) {
-			console.error(err);
+			logger.error(err);
 		}
 	}
 
@@ -110,8 +106,7 @@ export class MongoDatabase {
 		try {
 			await newUser.save();
 		} catch (err) {
-			console.error(err);
-			throw new Error("Failed to save user");
+			logger.error(`[${DB_FAILED_INSERT}] | ${err}`);
 		}
 	}
 }
