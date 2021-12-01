@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {IRouter} from 'express';
 import {
 	creatNewCart,
 	getProduct,
@@ -6,7 +6,7 @@ import {
 	deleteProduct
 } from '../controllers/cart.controller';
 
-const router = express.Router();
+const router: IRouter = express.Router();
 
 router.get('/', creatNewCart);
 router.get('/:idCart/:idProduct', getProduct);
@@ -14,3 +14,4 @@ router.post('/:idCart/:idProduct', saveProduct);
 router.delete('/:idCart/:idProduct', deleteProduct);
 
 export default router;
+

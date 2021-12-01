@@ -1,5 +1,5 @@
 import express, {IRouter} from 'express';
-import {loginSuccess, loginError, login} from '../controllers/login.controller';
+import {loginSuccess, loginError, login, loadLoginPage} from '../controllers/login.controller';
 import passport from '../passport';
 
 const router: IRouter = express.Router();
@@ -10,8 +10,8 @@ router.post('/', passport.authenticate(
 		failureRedirect: '/login/error',
 		successRedirect: '/login/success'
 	}
-));
-router.get('/', login);
+), login);
+router.get('/', loadLoginPage);
 router.get('/success', loginSuccess);
 router.get('/error', loginError);
 
