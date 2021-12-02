@@ -17,7 +17,7 @@ export class MongoDatabase {
 		try {
 			const uri: string = process.env.ATLAS_URI as string;
 			await mongoose.connect(uri, {});
-			console.log("Connection to mongo database was established");
+			logger.info("Connection to mongo database was established");
 		} catch (err) {
 			logger.error(`[${DB_FAILED_CONNECTION}] | ${err}`);
 		}
