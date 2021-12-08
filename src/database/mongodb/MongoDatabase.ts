@@ -68,14 +68,16 @@ export class MongoDatabase {
 	public async insertProduct(product: IProduct) {
 		const newProduct = new productsSchema(product);
 		try {
-			await newProduct.save();
+			const product = await newProduct.save();
+			return product;
 		} catch (err) {
 			logger.error(`[${DB_FAILED_INSERT}] | ${err}`);
 		}
 	}
 
-	public async deleteProduct(id: string) {
+	public async deleteProduct(args: any) {
 		try {
+			const {id} = args;
 			const deletedProduct = await productsSchema.deleteOne({id});
 			return deletedProduct;
 		} catch (err) {
@@ -85,7 +87,7 @@ export class MongoDatabase {
 
 	public async updateProduct(id: string, product: IProduct) {
 		try {
-			const updatedProduct = await productsSchema.updateOne({id}, {product});
+			const updatedProduct = await productsSchema.updateOne({id}, {$set: {...product}});
 			return updatedProduct;
 		} catch (err) {
 			logger.error(`[${DB_FAILED_UPDATE}] | ${err}`);
