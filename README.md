@@ -9,15 +9,16 @@ languages I used for developing and testing the app.
 
 ### Development
 
-- NodeJs
-- Typescript
-- Express
+- [NodeJs](https://nodejs.org/en/)
+- [Typescript](https://www.typescriptlang.org/)
+- [Express Js](https://expressjs.com/)
+- [Mongo Database](https://www.mongodb.com/)
 
 ### Testing
 
-- Mocha
-- Supertest
-- Chai
+- [Mocha](https://mochajs.org/)
+- [Supertest](https://github.com/visionmedia/supertest#readme)
+- [Chai](https://www.chaijs.com/)
 
 ## Installation
 
