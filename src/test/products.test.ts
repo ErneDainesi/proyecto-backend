@@ -3,9 +3,16 @@ import {expect} from 'chai';
 import 'mocha';
 
 const request = supertest('localhost:8080');
+const productId = "61b640ed264e18ed4f312178";
 
 describe('Test GET', () => {
-	const productId = '61b635b619d473993b8eb010';
+    const product = {
+        _id: "61b640ed264e18ed4f312178",
+        name: "pera",
+        description: "es una fruta",
+        stock: 20,
+        price: 200
+    };
 	it('Should return status 200', async () => {
 		const response = await request.get(`/products/${productId}`);
 		expect(response.status).to.eql(200);
@@ -13,9 +20,6 @@ describe('Test GET', () => {
 
 	it('Should return product', async () => {
 		const response = await request.get(`/products/${productId}`);
-		// FIXME: the product route isnt working correctly. Fix this
-		// and then use a proper product for test
-		const product = {productMongo: {}};
 		expect(response.body).to.eql(product);
 	});
 });
@@ -27,35 +31,28 @@ describe('Test POST', () => {
 			description: "es una fruta",
 			stock: 20,
 			price: 200
-		}
+		};
 		const response = await request.post('/products/1').send(product);
 		expect(response.status).to.eql(302);
 	});
 });
 
 describe('Test PUT', () => {
+	const product = {
+        _id: productId,
+        name: "pera",
+        description: "es una fruta",
+        stock: 20,
+        price: 333
+    };
+
 	it('Should return status 200', async () => {
-		const productId = '61b635b619d473993b8eb010';
-		const product = {
-			name: "kiwi",
-			description: "es una fruta",
-			stock: 20,
-			price: 333
-		}
 		const userId = '1';
 		const response = await request.put(`/products/${userId}/${productId}`).send(product);
 		expect(response.status).to.eql(200);
 	});
 
 	it('GET should return updated product', async () => {
-		const productId = '61b635b619d473993b8eb010';
-		// const product = {
-		//     name: "kiwi",
-		//     description: "es una fruta",
-		//     stock: 20,
-		//     price: 333
-		// }
-		const product = {productMongo: {}};
 		const response = await request.get(`/products/${productId}`);
 		expect(response.body).to.eql(product);
 	});
@@ -63,15 +60,14 @@ describe('Test PUT', () => {
 
 describe('Test DELETE', () => {
 	it('Should return status 200', async () => {
-		const productId = '61b635b619d473993b8eb010';
-		const response = await request.delete(`/products/${productId}`);
+        const userId = 1;
+		const response = await request.delete(`/products/${userId}/${productId}`);
 		expect(response.status).to.eql(200);
 	});
 
 	it('GET should return status 500 after DELETE', async () => {
-		const productId = '61b635b619d473993b8eb010';
 		const response = await request.get(`/products/${productId}`);
-		expect(response.status).to.eql(500);
+		expect(response.status).to.eql(404);
 	});
 });
 
