@@ -24,10 +24,8 @@ declare module 'express-session' {
 	}
 }
 
-const uri: string = "mongodb+srv://ernesto:erne@cluster0.mf9ug.mongodb.net/ecommerce?retryWrites=true&w=majority";
-
 app.use(session({
-	store: MongoStore.create({mongoUrl: uri}),
+	store: MongoStore.create({mongoUrl: process.env.ATLAS_URI as string}),
 	secret: 'secreto',
 	resave: true,
 	saveUninitialized: false,
