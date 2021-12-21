@@ -12,8 +12,9 @@ import {
 } from '../../constants';
 
 export class MongoDatabase {
+	private static _instance: MongoDatabase;
 
-	public static async connect() {
+	private async connect() {
 		try {
 			const uri: string = process.env.ATLAS_URI as string;
 			await mongoose.connect(uri, {});
@@ -21,6 +22,15 @@ export class MongoDatabase {
 		} catch (err) {
 			logger.error(`[${DB_FAILED_CONNECTION}] | ${err}`);
 		}
+	}
+
+	public static get Instance() {
+		if (!this._instance) {
+			this._instance = new this();
+            this._instance.connect();
+			return this._instance;
+		}
+		return this._instance;
 	}
 
 	public async getAllProducts() {
@@ -62,6 +72,7 @@ export class MongoDatabase {
 			return filteredProduct;
 		} catch (err) {
 			logger.error(`[${DB_FAILED_GET}] | ${err}`);
+            throw new Error(DB_FAILED_GET);
 		}
 	}
 
