@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import {User} from "../schemas/User.schema";
 
 export const login = (req: Request, res: Response) => {
-	const user = {...req.body};
+	const user: User = {...req.body};
 	req.session.user = user;
 	res.send({message: 'login success'});
 }
