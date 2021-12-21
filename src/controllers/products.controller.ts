@@ -53,7 +53,6 @@ export const updateProduct = (req: Request, res: Response) => {
 export const deleteProduct = (req: Request, res: Response) => {
 	try {
 		const productId: string = req.params.productId;
-        console.log(productId);
 		const deletedProduct = mongodb.deleteProduct(productId);
 		res.status(200).send(deletedProduct);
 	} catch (err) {
