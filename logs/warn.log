@@ -10,3 +10,20 @@
 {"level":"error"}
 {"level":"error","message":"[Failed getting item form database] | CastError: Cast to ObjectId failed for value \"{ id: '61b128222c52ce8b9b9a18dc' }\" (type Object) at path \"_id\" for model \"Product\""}
 {"level":"error","message":"[Failed getting item form database] | CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"Product\""}
+{"level":"error","message":"[Failed at connecting to database] | MongooseError: The `uri` parameter to `openUri()` must be a string, got \"undefined\". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string."}
+{"level":"error","message":"[Failed at connecting to database] | MongooseError: The `uri` parameter to `openUri()` must be a string, got \"undefined\". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string."}
+{"level":"error","message":"[Failed at connecting to database] | MongooseError: The `uri` parameter to `openUri()` must be a string, got \"undefined\". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string."}
+{"level":"error","message":"[Failed getting item form database] | CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"Product\""}
+{"level":"error","message":"[Failed getting item form database] | CastError: Cast to ObjectId failed for value \"'61b635b619d473993b8eb010'\" (type string) at path \"_id\" for model \"Product\""}
+{"level":"error","message":"Failed getting item form database"}
+{"level":"error","message":"[Failed getting item form database] | CastError: Cast to ObjectId failed for value \"3\" (type string) at path \"_id\" for model \"Product\""}
+{"level":"error","message":"[Failed getting item form database] | CastError: Cast to ObjectId failed for value \"3\" (type string) at path \"_id\" for model \"Product\""}
+{"level":"error","message":"[Failed getting item form database] | CastError: Cast to ObjectId failed for value \"3\" (type string) at path \"_id\" for model \"Product\""}
+{"level":"error","message":"[Failed getting item form database] | CastError: Cast to ObjectId failed for value \"3\" (type string) at path \"_id\" for model \"Product\""}
+{"level":"error","message":"[Failed getting item form database] | CastError: Cast to ObjectId failed for value \"3\" (type string) at path \"_id\" for model \"Product\""}
+{"level":"error","message":"Failed getting item form database"}
+{"level":"error","message":"Failed getting item form database"}
+{"level":"error","message":"Failed getting item form database"}
+{"level":"error","message":"Failed getting item form database"}
+{"level":"error","message":"Failed getting item form database"}
+{"level":"error","message":"Failed getting item form database"}
