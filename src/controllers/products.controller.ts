@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {MongoDatabase} from "../database/mongodb/MongoDatabase";
 
-const mongodb: MongoDatabase = new MongoDatabase();
+const mongodb: MongoDatabase = MongoDatabase.Instance;
 
 export const getProductsPage = (req: Request, res: Response) => {
 	res.render('pages/productos');
@@ -9,22 +9,22 @@ export const getProductsPage = (req: Request, res: Response) => {
 
 export const getProductsView = async (req: Request, res: Response) => {
 	try {
-		const products = mongodb.getAllProducts();
+		const products = await mongodb.getAllProducts();
 		const productCount = await mongodb.amountOfProducts();
 		res.render("pages/vista", {
 			products,
-			thereAreProducts: productCount ? productCount > 0 : false
+			thereAreProducts: productCount && productCount > 0
 		});
 	} catch (err) {
 		res.status(404).json({error: 'no products were found'});
 	}
 };
 
-export const getProduct = (req: Request, res: Response) => {
+export const getProduct = async (req: Request, res: Response) => {
 	const idProduct: string = req.params.id;
 	try {
-		const productMongo = mongodb.getProduct(idProduct, null);
-		res.json({productMongo});
+		const productMongo = await mongodb.getProduct(idProduct, null);
+		res.json(productMongo);
 	} catch (err) {
 		res.status(404).json({error: 'product not found'});
 	}
@@ -53,8 +53,9 @@ export const updateProduct = (req: Request, res: Response) => {
 export const deleteProduct = (req: Request, res: Response) => {
 	try {
 		const productId: string = req.params.productId;
+        console.log(productId);
 		const deletedProduct = mongodb.deleteProduct(productId);
-		res.send(deletedProduct);
+		res.status(200).send(deletedProduct);
 	} catch (err) {
 		res.status(500).json({error: "couldn't delete product"});
 	}
