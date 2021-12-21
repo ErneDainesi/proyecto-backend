@@ -1,6 +1,6 @@
-import express, { Response, Request } from 'express';
+import express, {Response, Request} from 'express';
 import {checkIfIsAdmin} from '../lib/validations';
-import { 
+import {
 	deleteProduct,
 	getProduct,
 	getProductsPage,
