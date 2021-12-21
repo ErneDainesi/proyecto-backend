@@ -10,12 +10,14 @@ import {
 	DB_FAILED_INSERT,
 	INVALID_FILTER
 } from '../../constants';
+import {config} from "dotenv";
 
 export class MongoDatabase {
 	private static _instance: MongoDatabase;
 
 	private async connect() {
 		try {
+			config(); // enviroment variables config
 			const uri: string = process.env.ATLAS_URI as string;
 			await mongoose.connect(uri, {});
 			logger.info("Connection to mongo database was established");
@@ -27,7 +29,7 @@ export class MongoDatabase {
 	public static get Instance() {
 		if (!this._instance) {
 			this._instance = new this();
-            this._instance.connect();
+			this._instance.connect();
 			return this._instance;
 		}
 		return this._instance;
@@ -72,7 +74,7 @@ export class MongoDatabase {
 			return filteredProduct;
 		} catch (err) {
 			logger.error(`[${DB_FAILED_GET}] | ${err}`);
-            throw new Error(DB_FAILED_GET);
+			throw new Error(DB_FAILED_GET);
 		}
 	}
 
