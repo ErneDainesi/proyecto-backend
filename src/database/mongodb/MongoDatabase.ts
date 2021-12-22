@@ -120,8 +120,18 @@ export class MongoDatabase {
 		const newUser = new UserSchema(user);
 		try {
 			await newUser.save();
+			logger.info('New user created');
 		} catch (err) {
 			logger.error(`[${DB_FAILED_INSERT}] | ${err}`);
+		}
+	}
+
+	public async getUser(email: string) {
+		try {
+			const user: User | null = await UserSchema.findOne({email: email})
+			return user;
+		} catch (err) {
+			logger.error(`[${DB_FAILED_GET}] | ${err}`);
 		}
 	}
 }
