@@ -17,9 +17,7 @@ const users: Array<User> = [
 export const checkIfIsAdmin: ErrorRequestHandler = (err, req, res, next) => {
 	const userId: number = +req.params.userId - 1;
 	const user: User = users[userId];
-	console.log("Entre el middleware");
 	if (!user.isAdmin) {
-		console.log("Entre al if del middleware");
 		res.status(400).json({
 			error: -1,
 			description: `Route ${req.originalUrl} method ${req.method} not authorized`
