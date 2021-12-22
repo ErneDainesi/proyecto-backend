@@ -1,11 +1,13 @@
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
 import UserSchema, {User} from './schemas/User.schema';
-import {MongoDatabase} from './database/mongodb/MongoDatabase';
 import {isValidPassword, hashPassword} from './lib/passwordManager';
+import {MongoDatabase} from './database/mongodb/MongoDatabase';
+import logger from "./logger/winston";
 
 passport.use('login', new LocalStrategy({
-	passReqToCallback: true
+	passReqToCallback: true,
+	usernameField: 'email'
 }, (req, email, password, done) => {
 	UserSchema.findOne({email}, (err: any, user: User) => {
 		if (err) return done(err);
@@ -15,16 +17,18 @@ passport.use('login', new LocalStrategy({
 		if (!isValidPassword(user, password)) {
 			return done(null, false);
 		}
+		req.session.user = user;
 		return done(null, user);
 	})
 }));
 
 passport.use('signup', new LocalStrategy({
-	passReqToCallback: true
+	passReqToCallback: true,
+	usernameField: 'email'
 }, (req, email, password, done) => {
 	UserSchema.findOne({email}, (err: any, user: User) => {
 		if (err) {
-			console.error(err);
+			logger.error(err);
 			return done(err);
 		}
 		if (user) {
@@ -32,22 +36,23 @@ passport.use('signup', new LocalStrategy({
 		}
 		const hashedPassword = hashPassword(req.body.password);
 		const newUser: User = {...req.body, password: hashedPassword};
-		const mongoDB: MongoDatabase = new MongoDatabase();
+		const db: MongoDatabase = MongoDatabase.Instance;
 		try {
-			mongoDB.insertUser(newUser);
+			db.insertUser(newUser);
+			req.session.user = newUser;
 			return done(null, newUser);
 		} catch (err) {
-			console.error(err);
+			logger.error(err);
 		}
 	})
 }));
 
 passport.serializeUser((user, done) => {
-	done(null, (user as User)._id);
+	done(null, (user as User).email);
 });
 
-passport.deserializeUser((name: string, done) => {
-	UserSchema.find({name: name}, (err: any, user: User) => {
+passport.deserializeUser((email: string, done) => {
+	UserSchema.find({email: email}, (err: any, user: User) => {
 		done(err, user);
 	});
 });

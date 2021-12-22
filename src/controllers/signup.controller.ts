@@ -1,13 +1,8 @@
 import {Request, Response} from "express";
 import logger from "../logger/winston";
-import {User} from "../schemas/User.schema";
+import {MongoDatabase} from "../database/mongodb/MongoDatabase";
 
-export const signup = (req: Request, res: Response) => {
-	const user: User = {...req.body};
-	req.session.user = user;
-	logger.info('Created session for user', user);
-	res.send({message: 'signup success'});
-}
+const db = MongoDatabase.Instance;
 
 export const loadSignupPage = (req: Request, res: Response) => {
 	res.render('pages/signup');
