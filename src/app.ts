@@ -10,16 +10,16 @@ import homeController from './routes/home.route';
 import passport from './passport';
 import compression from 'compression';
 import {COOKIE_MAX_AGE} from './constants';
-import {User} from './schemas/User.schema';
+import {IUser} from './database/users/users.schema';
 import {graphqlHTTP} from 'express-graphql';
-import {schema, root} from './graphql';
+import {schema, root} from './graphql/router/graphql';
 
 const app: Application = express();
 const ejs = require("ejs").__express; // solucion a error "cannot find ejs module"
 
 declare module 'express-session' {
 	interface SessionData {
-		user: User,
+		user: IUser,
 		creationTime: number
 	}
 }

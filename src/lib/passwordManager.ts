@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
-import {User} from '../schemas/User.schema';
+import {IUser} from '../database/users/users.schema';
 
-export const isValidPassword = (user: User, password: string) => {
+export const isValidPassword = (user: IUser, password: string) => {
 	return bcrypt.compareSync(password, user.password);
 };
 

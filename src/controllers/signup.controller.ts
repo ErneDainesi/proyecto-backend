@@ -1,8 +1,5 @@
 import {Request, Response} from "express";
 import logger from "../logger/winston";
-import {MongoDatabase} from "../database/mongodb/MongoDatabase";
-
-const db = MongoDatabase.Instance;
 
 export const loadSignupPage = (req: Request, res: Response) => {
 	res.render('pages/signup');

@@ -1,13 +1,13 @@
 import logger from "../../logger/winston";
-import {MongoDatabase} from "../../database/mongodb/MongoDatabase";
-import {IProduct} from "../../schemas/productsSchema";
+import {ProductsDao} from '../../database/products/productsDao';
+import {IProduct} from '../../database/products/products.schema';
 
-const mongodb: MongoDatabase = MongoDatabase.Instance;
+const productDao: ProductsDao = new ProductsDao();
 
 export const getProduct = (args: any) => {
 	try {
 		const {id} = args;
-		return mongodb.getProduct(id, null);
+		return productDao.getProduct(id, null);
 	} catch (err) {
 		logger.error(err);
 	}
@@ -15,7 +15,7 @@ export const getProduct = (args: any) => {
 
 export const getProducts = () => {
 	try {
-		return mongodb.getAllProducts();
+		return productDao.getAllProducts();
 	} catch (err) {
 		logger.error(err);
 	}
@@ -30,7 +30,7 @@ export const updateProduct = (args: any) => {
 			stock,
 			price
 		}
-		return mongodb.updateProduct(id, newValue as IProduct);
+		return productDao.updateProduct(id, newValue as IProduct);
 	} catch (err) {
 		logger.error(err);
 	}
@@ -39,7 +39,7 @@ export const updateProduct = (args: any) => {
 export const saveProduct = (args: any) => {
 	try {
 		const product = {...args};
-		return mongodb.insertProduct(product as IProduct);
+		return productDao.insertProduct(product as IProduct);
 	} catch (err) {
 		logger.error(err);
 	}
@@ -47,7 +47,7 @@ export const saveProduct = (args: any) => {
 
 export const deleteProduct = (id: string) => {
 	try {
-		return mongodb.deleteProduct(id);
+		return productDao.deleteProduct(id);
 	} catch (err) {
 		logger.error(err);
 	}

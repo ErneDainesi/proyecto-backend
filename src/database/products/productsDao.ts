@@ -1,38 +1,18 @@
-import mongoose from 'mongoose';
-import productsSchema, {IProduct} from '../../schemas/productsSchema';
-import UserSchema, {User} from '../../schemas/User.schema';
+import productsSchema, {IProduct} from "./products.schema";
+import {ProductsDto} from "./productsDto";
 import logger from '../../logger/winston';
+import {MongoDatabase} from "../db/MongoDatabase";
 import {
-	DB_FAILED_CONNECTION,
 	DB_FAILED_GET,
 	DB_FAILED_DELETE,
 	DB_FAILED_UPDATE,
 	DB_FAILED_INSERT,
 	INVALID_FILTER
 } from '../../constants';
-import {config} from "dotenv";
 
-export class MongoDatabase {
-	private static _instance: MongoDatabase;
-
-	private async connect() {
-		try {
-			config(); // enviroment variables config
-			const uri: string = process.env.ATLAS_URI as string;
-			await mongoose.connect(uri, {});
-			logger.info("Connection to mongo database was established");
-		} catch (err) {
-			logger.error(`[${DB_FAILED_CONNECTION}] | ${err}`);
-		}
-	}
-
-	public static get Instance() {
-		if (!this._instance) {
-			this._instance = new this();
-			this._instance.connect();
-			return this._instance;
-		}
-		return this._instance;
+export class ProductsDao {
+	constructor() {
+		MongoDatabase.Instance.connect();
 	}
 
 	public async getAllProducts() {
@@ -41,21 +21,6 @@ export class MongoDatabase {
 			return products;
 		} catch (err) {
 			logger.error(`[${DB_FAILED_GET}] | ${err}`);
-		}
-	}
-
-	private filterProduct(product: IProduct, filter: string) {
-		switch (filter) {
-			case "name":
-				return product.name;
-			case "description":
-				return product.description;
-			case "stock":
-				return product.stock;
-			case "price":
-				return product.price;
-			default:
-				break;
 		}
 	}
 
@@ -116,22 +81,18 @@ export class MongoDatabase {
 		}
 	}
 
-	public async insertUser(user: User) {
-		const newUser = new UserSchema(user);
-		try {
-			await newUser.save();
-			logger.info('New user created');
-		} catch (err) {
-			logger.error(`[${DB_FAILED_INSERT}] | ${err}`);
-		}
-	}
-
-	public async getUser(email: string) {
-		try {
-			const user: User | null = await UserSchema.findOne({email: email})
-			return user;
-		} catch (err) {
-			logger.error(`[${DB_FAILED_GET}] | ${err}`);
+	private filterProduct(product: IProduct, filter: string) {
+		switch (filter) {
+			case "name":
+				return product.name;
+			case "description":
+				return product.description;
+			case "stock":
+				return product.stock;
+			case "price":
+				return product.price;
+			default:
+				break;
 		}
 	}
 }

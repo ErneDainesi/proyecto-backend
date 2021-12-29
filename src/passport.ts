@@ -1,15 +1,15 @@
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
-import UserSchema, {User} from './schemas/User.schema';
+import UserSchema, {IUser} from './database/users/users.schema';
 import {isValidPassword, hashPassword} from './lib/passwordManager';
-import {MongoDatabase} from './database/mongodb/MongoDatabase';
+import {UsersDao} from './database/users/usersDao';
 import logger from "./logger/winston";
 
 passport.use('login', new LocalStrategy({
 	passReqToCallback: true,
 	usernameField: 'email'
 }, (req, email, password, done) => {
-	UserSchema.findOne({email}, (err: any, user: User) => {
+	UserSchema.findOne({email}, (err: any, user: IUser) => {
 		if (err) return done(err);
 		if (!user) {
 			return done(null, false);
@@ -26,7 +26,7 @@ passport.use('signup', new LocalStrategy({
 	passReqToCallback: true,
 	usernameField: 'email'
 }, (req, email, password, done) => {
-	UserSchema.findOne({email}, (err: any, user: User) => {
+	UserSchema.findOne({email}, (err: any, user: IUser) => {
 		if (err) {
 			logger.error(err);
 			return done(err);
@@ -35,10 +35,14 @@ passport.use('signup', new LocalStrategy({
 			return done(null, false);
 		}
 		const hashedPassword = hashPassword(req.body.password);
-		const newUser: User = {...req.body, password: hashedPassword};
-		const db: MongoDatabase = MongoDatabase.Instance;
+		const newUser: IUser = {
+			...req.body,
+			password: hashedPassword,
+			isAdmin: false
+		};
+		const userDao: UsersDao = new UsersDao();
 		try {
-			db.insertUser(newUser);
+			userDao.insertUser(newUser);
 			req.session.user = newUser;
 			return done(null, newUser);
 		} catch (err) {
@@ -48,11 +52,11 @@ passport.use('signup', new LocalStrategy({
 }));
 
 passport.serializeUser((user, done) => {
-	done(null, (user as User).email);
+	done(null, (user as IUser).email);
 });
 
 passport.deserializeUser((email: string, done) => {
-	UserSchema.find({email: email}, (err: any, user: User) => {
+	UserSchema.find({email: email}, (err: any, user: IUser) => {
 		done(err, user);
 	});
 });
