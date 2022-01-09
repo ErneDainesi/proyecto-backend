@@ -50,5 +50,5 @@ const UserSchema = new Schema<IUser>({
 	}
 });
 
-export default model<IUser>("UserMongo", UserSchema);
+export default model<IUser>("User", UserSchema);
 
