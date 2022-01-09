@@ -10,6 +10,9 @@ export class MongoDatabase {
 
 	async connect() {
 		try {
+      if (this.isConnectedToDatabase()) {
+        return;
+      }
 			config(); // enviroment variables config
 			const uri: string = process.env.ATLAS_URI as string;
 			await mongoose.connect(uri, {});
@@ -26,5 +29,10 @@ export class MongoDatabase {
 		}
 		return this._instance;
 	}
+
+  private isConnectedToDatabase() {
+    const connectionReadyState = mongoose.connection.readyState;
+    return connectionReadyState === 1 || connectionReadyState === 2;
+  }
 }
 
