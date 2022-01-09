@@ -7,20 +7,26 @@ import cartController from './routes/cart.route';
 import loginController from './routes/login.route';
 import signupController from './routes/signup.route';
 import homeController from './routes/home.route';
+import chatController from './routes/chat.route';
 import passport from './passport';
 import compression from 'compression';
 import {COOKIE_MAX_AGE} from './constants';
 import {IUser} from './database/users/users.schema';
 import {graphqlHTTP} from 'express-graphql';
 import {schema, root} from './graphql/router/graphql';
+import {createServer} from 'http';
+import {Server} from 'socket.io';
+import path from 'path';
 
-const app: Application = express();
+export const app: Application = express();
+export const server = createServer(app);
+export const io = new Server(server);
+
 const ejs = require("ejs").__express; // solucion a error "cannot find ejs module"
 
 declare module 'express-session' {
 	interface SessionData {
 		user: IUser,
-		creationTime: number
 	}
 }
 
@@ -40,12 +46,14 @@ app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(compression());
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/products', productsController);
 app.use('/cart', cartController);
 app.use('/login', loginController);
 app.use('/signup', signupController);
 app.use('/home', homeController);
+app.use('/chat', chatController);
 app.use('/graphql', graphqlHTTP({
 	schema: schema,
 	rootValue: root,
@@ -55,6 +63,4 @@ app.use('/graphql', graphqlHTTP({
 app.set('view engine', 'ejs');
 app.set('views', './src/views');
 app.engine('ejs', ejs);
-
-export default app;
 
