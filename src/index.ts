@@ -1,13 +1,17 @@
 import {Request, Response} from 'express';
 import {PORT} from './constants';
-import app from './app';
+import {app, server} from './app';
 import logger from './logger/winston';
 
 app.get('/', (req: Request, res: Response) => {
-	res.render('pages/index');
+    const session = req.session;
+    if (session.user) {
+        res.redirect('/products/view');
+    }
+    res.render('pages/index');
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
 	logger.info(`Express Server listening on port: ${PORT}`);
 });
 
