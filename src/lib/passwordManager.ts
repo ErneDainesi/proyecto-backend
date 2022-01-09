@@ -9,3 +9,7 @@ export const hashPassword = (password: string) => {
 	return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 }
 
+export const passwordEqualsPasswordValidation = (password: string, passwordVerification: string) => {
+  return password === passwordVerification;
+}
+
