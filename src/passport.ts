@@ -1,9 +1,10 @@
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
 import UserSchema, {IUser} from './database/users/users.schema';
-import {isValidPassword, hashPassword} from './lib/passwordManager';
+import {isValidPassword, hashPassword, passwordEqualsPasswordValidation} from './lib/passwordManager';
 import {UsersDao} from './database/users/usersDao';
 import logger from "./logger/winston";
+import {sendMailToAdmin} from './lib/messaging';
 
 passport.use('login', new LocalStrategy({
 	passReqToCallback: true,
@@ -34,6 +35,10 @@ passport.use('signup', new LocalStrategy({
 		if (user) {
 			return done(null, false);
 		}
+    const isPasswordValid = passwordEqualsPasswordValidation(req.body.password, req.body.passwordVerification);
+    if (!isPasswordValid) {
+      return done(err);
+    }
 		const hashedPassword = hashPassword(req.body.password);
 		const newUser: IUser = {
 			...req.body,
@@ -44,6 +49,7 @@ passport.use('signup', new LocalStrategy({
 		try {
 			userDao.insertUser(newUser);
 			req.session.user = newUser;
+      sendMailToAdmin(newUser);
 			return done(null, newUser);
 		} catch (err) {
 			logger.error(err);
