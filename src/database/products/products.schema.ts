@@ -8,7 +8,7 @@ export interface IProduct extends Document {
 	price: number
 }
 
-const productSchema = new Schema<IProduct>({
+export const productSchema = new Schema<IProduct>({
 	name: {
 		type: String,
 		required: true
