@@ -1,39 +1,30 @@
 import {Request, Response} from 'express';
-import {Cart} from '../models/Cart';
+import { CartDao } from '../database/cart/cartDao';
+import { IProduct } from '../database/products/products.schema';
+import { ProductsDao } from '../database/products/productsDao';
 
-const carts: Cart[] = [];
+const cartDao: CartDao = new CartDao();
+const productDao: ProductsDao = new ProductsDao();
 
-export const creatNewCart = (req: Request, res: Response) => {
-	const cart: Cart = new Cart(carts.length + 1, Date.now());
-	carts.push(cart);
-	res.send('<h1>Cart</h1>');
+export const getCart = async (req: Request, res: Response) => {
+    const userEmail: string = req.session.user.email;
+	const cart = await cartDao.getCart(userEmail);
+	res.send(cart);
 };
 
-export const getProduct = (req: Request, res: Response) => {
-	const idProduct = req.params.idProduct ? +req.params.idProduct : false;
-	const idCart: number = +req.params.idCart;
-	const selectedCart: Cart = carts[idCart - 1];
-	if (idProduct) {
-		res.send(selectedCart.getProduct(idProduct));
-	} else {
-		res.send(selectedCart.cartProducts());
-	}
+export const getProductFromCart = async (req: Request, res: Response) => {
+    const product = await cartDao.getProduct(req.params.idProduct, req.session.user.email);
+    res.send(product);
 };
 
-export const saveProduct = (req: Request, res: Response) => {
-	const product: Object = {
-		...req.body,
-		id: +req.params.idProduct,
-		timeStamp: Date.now()
-	};
-	const cart: Cart = carts[+req.params.idCart - 1];
-	cart.addToCart(product);
-	res.json(product);
+export const addProductToCart = async (req: Request, res: Response) => {
+    const product = await productDao.getProduct(req.params.idProduct, null);
+	await cartDao.addToCart(product as IProduct, req.session.user.email);
+	res.send(product);
 };
 
-export const deleteProduct = (req: Request, res: Response) => {
-	const productId: number = +req.params.idProduct;
-	const cart: Cart = carts[+req.params.idCart - 1];
-	const deletedProduct: Object = cart.removeFromCart(productId);
-	res.send(deletedProduct);
+export const removeProductFromCart = async (req: Request, res: Response) => {
+    const updatedCart = await cartDao.removeFromCart(req.params.idProduct, req.session.user.email);
+    res.send(updatedCart);
 };
+

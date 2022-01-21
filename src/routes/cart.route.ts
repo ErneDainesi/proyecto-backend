@@ -1,17 +1,17 @@
 import express, {IRouter} from 'express';
 import {
-	creatNewCart,
-	getProduct,
-	saveProduct,
-	deleteProduct
+	getCart,
+	getProductFromCart,
+	addProductToCart,
+    removeProductFromCart
 } from '../controllers/cart.controller';
 
 const router: IRouter = express.Router();
 
-router.get('/', creatNewCart);
-router.get('/:idCart/:idProduct', getProduct);
-router.post('/:idCart/:idProduct', saveProduct);
-router.delete('/:idCart/:idProduct', deleteProduct);
+router.get('/', getCart);
+router.get('/:idProduct', getProductFromCart);
+router.post('/:idProduct', addProductToCart);
+router.delete('/:idProduct', removeProductFromCart);
 
 export default router;
 
