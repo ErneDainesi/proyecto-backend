@@ -5,6 +5,9 @@ import {isValidPassword, hashPassword, passwordEqualsPasswordValidation} from '.
 import {UsersDao} from './database/users/usersDao';
 import logger from "./logger/winston";
 import {sendMailToAdmin} from './lib/messaging';
+import { CartDao } from './database/cart/cartDao';
+import { ICart } from './database/cart/cart.schema';
+import { IProduct } from './database/products/products.schema';
 
 passport.use('login', new LocalStrategy({
 	passReqToCallback: true,
@@ -45,11 +48,20 @@ passport.use('signup', new LocalStrategy({
 			password: hashedPassword,
 			isAdmin: false
 		};
+        const items: Array<IProduct> = [];
+        const newCart = {
+            email: req.body.email,
+            items,
+            date: 'Miercoles',
+            shippingAddress: 'Campos Salles 1857'
+        };
+        const cartDao: CartDao = new CartDao();
 		const userDao: UsersDao = new UsersDao();
 		try {
+            cartDao.insertCart(newCart as ICart);
 			userDao.insertUser(newUser);
 			req.session.user = newUser;
-      sendMailToAdmin(newUser);
+            sendMailToAdmin(newUser);
 			return done(null, newUser);
 		} catch (err) {
 			logger.error(err);
