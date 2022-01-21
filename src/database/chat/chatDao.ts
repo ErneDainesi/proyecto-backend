@@ -27,7 +27,7 @@ export class ChatDao {
 			const messages: Array<IChatMessage> = await ChatMessageSchema.find(query);
             return messages;
         } catch (err) {
-           logger.error(err);
+           logger.error(`[${DB_FAILED_GET}] | ${err}`);
         }
     }
 
