@@ -14,8 +14,8 @@ const router = express.Router();
 router.get('/', getProductsPage);
 router.get('/view', getProductsView);
 router.get('/:id', getProduct);
-router.post('/:userId', checkIfIsAdmin, saveProduct);
-router.put('/:userId/:productId', checkIfIsAdmin, updateProduct);
-router.delete('/:userId/:productId', checkIfIsAdmin, deleteProduct);
+router.post('/', checkIfIsAdmin, saveProduct);
+router.put('/:productId', checkIfIsAdmin, updateProduct);
+router.delete('/:productId', checkIfIsAdmin, deleteProduct);
 
 export default router;
