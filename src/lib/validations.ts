@@ -2,7 +2,7 @@ import {Request, Response, NextFunction} from 'express';
 import logger from '../logger/winston';
 
 export const checkIfIsAdmin = (req: Request, res: Response, next: NextFunction) => {
-	const isAdmin: boolean = !!req.session.user?.isAdmin;
+	const isAdmin: boolean = req.session.user?.isAdmin;
 	if (isAdmin) {
         next();
         return;
