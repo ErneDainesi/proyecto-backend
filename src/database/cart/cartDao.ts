@@ -63,21 +63,16 @@ export class CartDao {
     }
 
     private getProductFromCart(cartItems: Array<IProduct>, productId: string) {
-        const product = cartItems.forEach(item => {
-            if (item._id === productId) {
+        const product = cartItems.find(item => {
+            if (item._id == productId) {
                 return item;
             }
-        })
+        });
         return product;
     }
 
     private removeItemFromCart(cartItems: Array<IProduct>, productId: string) {
-        const updatedCart = cartItems.filter(item => {
-            if (item._id === productId) {
-               return item;
-            }
-        });
-        return updatedCart;
+        return cartItems.filter(item => item._id == productId);
     }
 }
 
