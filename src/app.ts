@@ -8,6 +8,7 @@ import loginController from './routes/login.route';
 import signupController from './routes/signup.route';
 import homeController from './routes/home.route';
 import chatController from './routes/chat.route';
+import userController from './routes/user.route';
 import passport from './passport';
 import compression from 'compression';
 import {COOKIE_MAX_AGE} from './constants';
@@ -54,6 +55,7 @@ app.use('/login', loginController);
 app.use('/signup', signupController);
 app.use('/home', homeController);
 app.use('/chat', chatController);
+app.use('/user', userController);
 app.use('/graphql', graphqlHTTP({
 	schema: schema,
 	rootValue: root,

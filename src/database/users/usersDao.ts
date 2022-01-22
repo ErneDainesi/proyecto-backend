@@ -1,9 +1,9 @@
 import UserSchema, {IUser} from './users.schema';
-import {UsersDto} from './usersDto';
 import logger from '../../logger/winston';
 import {
 	DB_FAILED_GET,
 	DB_FAILED_INSERT,
+    DB_FAILED_UPDATE
 } from '../../constants';
 import {MongoDatabase} from '../db/MongoDatabase';
 
@@ -32,7 +32,16 @@ export class UsersDao {
 	}
 
 	public async makeUserAdmin(user: IUser) {
-		return UsersDto.makeAdminUser(user);
+        try {
+            const filter = {_id: user._id};
+            const update = {isAdmin: true};
+            const updatedUser = await UserSchema.findOneAndUpdate(filter, update, {
+                new: true
+            });
+            return updatedUser;
+        } catch (err) {
+            logger.error(`[${DB_FAILED_UPDATE}] | ${err}`);
+        }
 	}
 }
 
