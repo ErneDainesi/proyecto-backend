@@ -9,6 +9,9 @@
 					<%= product.price %>
 				</p>
 				<img src="<%= product.thumbnail %>" alt="imagen de producto">
+                <form action="/cart/<%= product._id%>" method="POST" enctype="application/x-www-form-urlencoded">
+                    <button type="submit">Agregar a carrito</button>
+                </form>
 			</div>
 		<%});%>
 	</div>
