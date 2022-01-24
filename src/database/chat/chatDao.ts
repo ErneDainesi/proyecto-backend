@@ -16,6 +16,8 @@ export class ChatDao {
         try {
             await newMessage.save();
             logger.info('Chat message saved');
+            const messages = await this.getMessages();
+            return messages;
         } catch (err) {
             logger.error(`[${DB_FAILED_INSERT}] | ${err}`);
         }

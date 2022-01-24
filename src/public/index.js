@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const body = document.querySelector("#chat-message").value;
         const date = buildDate();
         const message = {email, date, body};
+        body.innerHTML = "";
 		socket.emit("new-message", message);
 	};
 
