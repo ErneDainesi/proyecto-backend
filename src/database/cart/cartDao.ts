@@ -4,6 +4,7 @@ import {
     DB_FAILED_DELETE,
 	DB_FAILED_GET,
 	DB_FAILED_INSERT,
+    DB_FAILED_UPDATE
 } from '../../constants';
 import { IProduct } from '../products/products.schema';
 import cartSchema, { ICart } from './cart.schema';
@@ -59,6 +60,16 @@ export class CartDao {
            return this.getProductFromCart(cart.items, productId);
         } catch (err) {
            logger.error(`[${DB_FAILED_GET}] | ${err}`);
+        }
+    }
+
+    public async emptyCart(email: string) {
+        try {
+            const cart = await this.getCart(email);
+            cart.items = [];
+            cart.save();
+        } catch(err) {
+            logger.error(`[${DB_FAILED_UPDATE}] | ${err}`);
         }
     }
 
