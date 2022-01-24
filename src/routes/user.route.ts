@@ -1,6 +1,6 @@
 import express, {IRouter} from 'express';
 import {makeUserAdmin} from '../controllers/user.controller';
-import {checkIfSessionIsActive} from '../lib/validations';
+import { checkIfSessionIsActive } from '../lib/validations';
 
 const router: IRouter = express.Router();
 

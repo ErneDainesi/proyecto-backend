@@ -1,5 +1,5 @@
 import express, {Response, Request} from 'express';
-import {checkIfIsAdmin} from '../lib/validations';
+import {checkIfIsAdmin, checkIfSessionIsActive} from '../lib/validations';
 import {
 	deleteProduct,
 	getProduct,
@@ -11,8 +11,8 @@ import {
 
 const router = express.Router();
 
-router.get('/', getProductsPage);
-router.get('/view', getProductsView);
+router.get('/', checkIfSessionIsActive, getProductsPage);
+router.get('/view', checkIfSessionIsActive, getProductsView);
 router.get('/:id', getProduct);
 router.post('/', checkIfIsAdmin, saveProduct);
 router.put('/:productId', checkIfIsAdmin, updateProduct);
