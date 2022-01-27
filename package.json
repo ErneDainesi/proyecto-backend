@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
     "dev:cluster": "ts-node-dev src/index.ts CLUSTER",
-    "build": "npx tsc",
+    "build": "npx --package=typescript -- tsc",
     "start": "npm run build && node dist/index.js",
     "start:cluster": "npm run build && node dist/index.js CLUSTER",
     "test": "npx mocha dist/test"
