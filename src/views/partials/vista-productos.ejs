@@ -12,7 +12,11 @@
                 <form action="/cart/<%= product._id%>" method="POST" enctype="application/x-www-form-urlencoded">
                     <button type="submit">Agregar a carrito</button>
                 </form>
+
 			</div>
 		<%});%>
+        <form action="/order" method="POST" enctype="application/x-www-form-urlencoded">
+            <button type="submit">Crear orden</button>
+        </form>
 	</div>
 </div>

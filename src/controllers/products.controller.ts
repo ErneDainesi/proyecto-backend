@@ -9,7 +9,7 @@ export const getProductsPage = (req: Request, res: Response) => {
 
 export const getProductsView = async (req: Request, res: Response) => {
 	try {
-		const products = await productDao.getAllProducts();
+		const products = await productDao.getAllProducts(null);
 		const productCount = await productDao.amountOfProducts();
 		res.render("pages/vista", {
 			products,
@@ -17,6 +17,19 @@ export const getProductsView = async (req: Request, res: Response) => {
 		});
 	} catch (err) {
 		res.status(404).json({error: 'no products were found'});
+	}
+};
+
+export const getProductsFromCategory = async (req: Request, res: Response) => {
+	try {
+		const products = await productDao.getAllProducts(req.params.category);
+        if (products.length < 1) {
+            res.send({error: "there are no products in that category"});
+            return;
+        }
+		res.send(products);
+	} catch (err) {
+		res.status(404).json({error: 'no products were found with that category'});
 	}
 };
 

@@ -2,6 +2,7 @@ import {Document, Schema, model} from "mongoose";
 import {IProduct} from '../products/products.schema';
 
 export interface IProductOrder {
+    [key: string]: string | number | IProduct;
     amount: number,
     item: IProduct
 }

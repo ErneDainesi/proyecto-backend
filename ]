@@ -9,8 +9,6 @@ import signupController from './routes/signup.route';
 import homeController from './routes/home.route';
 import chatController from './routes/chat.route';
 import userController from './routes/user.route';
-import orderController from './routes/order.route';
-import logoutController from './routes/logout.route';
 import passport from './passport';
 import compression from 'compression';
 import {COOKIE_MAX_AGE} from './constants';
@@ -20,6 +18,7 @@ import {schema, root} from './graphql/router/graphql';
 import {createServer} from 'http';
 import {Server} from 'socket.io';
 import path from 'path';
+import logger from './logger/winston';
 
 export const app: Application = express();
 export const server = createServer(app);
@@ -58,8 +57,6 @@ app.use('/signup', signupController);
 app.use('/home', homeController);
 app.use('/chat', chatController);
 app.use('/user', userController);
-app.use('/order', orderController);
-app.use('/logout', logoutController);
 app.use('/graphql', graphqlHTTP({
 	schema: schema,
 	rootValue: root,
@@ -70,3 +67,7 @@ app.set('view engine', 'ejs');
 app.set('views', './src/views');
 app.engine('ejs', ejs);
 
+
+io.on('connection', () => {
+    logger.info("connected");
+});

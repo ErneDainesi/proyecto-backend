@@ -20,5 +20,6 @@ export const checkIfSessionIsActive = (req: Request, res: Response, next: NextFu
     }
     logger.error('User not logged in');
     res.redirect('/login');
+    return;
 }
 

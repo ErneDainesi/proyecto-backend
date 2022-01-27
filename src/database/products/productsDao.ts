@@ -1,5 +1,4 @@
 import productsSchema, {IProduct} from "./products.schema";
-import {ProductsDto} from "./productsDto";
 import logger from '../../logger/winston';
 import {MongoDatabase} from "../db/MongoDatabase";
 import {
@@ -15,9 +14,14 @@ export class ProductsDao {
 		MongoDatabase.Instance.connect();
 	}
 
-	public async getAllProducts() {
+	public async getAllProducts(category: string) {
 		try {
-			const products = await productsSchema.find();
+            let products;
+            if (category) {
+                products = await productsSchema.find({category});
+            } else {
+                products = await productsSchema.find();
+            }
 			return products;
 		} catch (err) {
 			logger.error(`[${DB_FAILED_GET}] | ${err}`);

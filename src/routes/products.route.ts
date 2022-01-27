@@ -6,7 +6,8 @@ import {
 	getProductsPage,
 	getProductsView,
 	saveProduct,
-	updateProduct
+	updateProduct,
+    getProductsFromCategory
 } from '../controllers/products.controller';
 
 const router = express.Router();
@@ -14,8 +15,9 @@ const router = express.Router();
 router.get('/', checkIfSessionIsActive, getProductsPage);
 router.get('/view', checkIfSessionIsActive, getProductsView);
 router.get('/:id', getProduct);
-router.post('/', checkIfIsAdmin, saveProduct);
-router.put('/:productId', checkIfIsAdmin, updateProduct);
-router.delete('/:productId', checkIfIsAdmin, deleteProduct);
+router.get('/category/:category', checkIfSessionIsActive, getProductsFromCategory);
+router.post('/', [checkIfSessionIsActive, checkIfIsAdmin], saveProduct);
+router.put('/:productId', [checkIfSessionIsActive, checkIfIsAdmin], updateProduct);
+router.delete('/:productId', [checkIfSessionIsActive, checkIfIsAdmin], deleteProduct);
 
 export default router;

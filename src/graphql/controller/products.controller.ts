@@ -15,7 +15,7 @@ export const getProduct = (args: any) => {
 
 export const getProducts = () => {
 	try {
-		return productDao.getAllProducts();
+		return productDao.getAllProducts(null);
 	} catch (err) {
 		logger.error(err);
 	}
